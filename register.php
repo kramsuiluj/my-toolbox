@@ -1,3 +1,41 @@
+<?php 
+
+require_once 'db/conn.php';
+
+$sysMessages = ['regMsg' => ''];
+
+if (isset($_POST['reg-btn'])) {
+
+    if (empty($_POST['username']) || empty($_POST['email']) || empty($_POST['cnumber']) || empty($_POST['pass']) || empty($_POST['cpass'])) {
+
+        $sysMessages['regMsg'] = 'All input fields are required to continue.';
+
+    } else {
+
+        $username = htmlspecialchars($_POST['username']);
+        $email = htmlspecialchars($_POST['email']);
+        $cnumber = htmlspecialchars($_POST['cnumber']);
+        $pass = htmlspecialchars($_POST['pass']);
+        $cpass = htmlspecialchars($_POST['cpass']);
+
+        $register = $user->saveUserData($username, $email, $cnumber, $pass, $cpass);
+
+        if ($register) {
+
+            $sysMessages['regMsg'] = 'Your registration was successful!';
+
+        } else {
+
+            $sysMessages['regMsg'] = 'There was an error while registering your data.';
+
+        }
+
+    }
+
+}
+
+?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +52,7 @@
     
         <section class="reg-form-section">
 
-            <form action="login.php" method="POST" id="reg-form">
+            <form action="register.php" method="POST" id="reg-form">
             
                 <section>
                     <label for="username">Username</label><br>
@@ -28,7 +66,7 @@
 
                 <section>
                     <label for="cnumber">Contact Number</label><br>
-                    <input type="tel" name="cnumber" id="cnumber">
+                    <input type="text" name="cnumber" id="cnumber">
                 </section>
 
                 <section>
@@ -47,6 +85,10 @@
                 </section>
             
             </form>
+
+            <?php if ($sysMessages['regMsg'] != '') { ?>
+                <p class="regMsg"><?php echo $sysMessages['regMsg']; ?></p>
+            <?php } ?>
 
         </section>
 
