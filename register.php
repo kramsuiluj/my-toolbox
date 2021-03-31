@@ -60,6 +60,10 @@ if (isset($_POST['reg-btn'])) {
 
             $pass = htmlspecialchars($_POST['pass']);
 
+            $encPass = password_hash($pass, PASSWORD_DEFAULT);
+
+            $pass = $encPass;
+
         } else {
 
             $notice['pass'] = 'The password you entered is invalid!';
@@ -68,7 +72,7 @@ if (isset($_POST['reg-btn'])) {
         // End of Password Validation
 
         // Confirm Password Validation
-        if ($pass === htmlspecialchars($_POST['cpass'])) {
+        if (password_verify($_POST['cpass'], $pass)) {
 
             $cpass = htmlspecialchars($_POST['cpass']);
 
